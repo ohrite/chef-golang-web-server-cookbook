@@ -12,6 +12,14 @@ define :nutty_deploy_config_and_monit do
     action :nothing
   end
 
+  directory "#{params[:deploy_to]}/shared/config" do
+    owner     'root'
+    group     'root'
+    mode      '0644'
+    action    :create
+    recursive true
+  end
+
   template "#{params[:deploy_to]}/shared/config/nutty.properties" do
     source  'nutty.properties.erb'
     mode    '0660'
@@ -25,7 +33,15 @@ define :nutty_deploy_config_and_monit do
       :kafka_partition  => (params[:hostname].match(/(\d+)(?!.*\d)/).nil? ? 0 : params[:hostname].match(/(\d+)(?!.*\d)/)[0].to_i - 1)
     )
   end
-  
+
+  directory "#{params[:deploy_to]}/current" do
+    owner     'root'
+    group     'root'
+    mode      '0644'
+    action    :create
+    recursive true
+  end
+
   template "#{params[:deploy_to]}/current/nutty-#{params[:application_name]}-server-daemon" do
     source   'nutty-server-daemon.erb'
     owner    'root'
@@ -39,7 +55,7 @@ define :nutty_deploy_config_and_monit do
       :output_file      => params[:nutty_application_settings][:output_file]
     )
   end
-  
+
   template "#{params[:monit_conf_dir]}/nutty_#{params[:application_name]}_server.monitrc" do
     source  'nutty_server.monitrc.erb'
     owner   'root'
