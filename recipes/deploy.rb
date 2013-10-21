@@ -1,10 +1,11 @@
+include_recipe 'golang'
 
 node[:deploy].each do |application, _|
   if node[:deploy][application][:application_type] != 'nutty'
     Chef::Log.debug("Skipping nutty::deploy for application #{application} as it is not set as a nutty app")
     next
   end
-  
+
   nutty_deploy_dir do
     user    node[:deploy][application][:user]
     group   node[:deploy][application][:group]
