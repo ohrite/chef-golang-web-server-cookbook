@@ -1,4 +1,4 @@
-check proces nutty_<%= @application_name %>_server with pidfile <%= @pidfile %>
+check process nutty_<%= @application_name %>_server with pidfile <%= @pid_file %>
   start program = "<%= @release_path %>/nutty-<%= @application_name %>-server-daemon start"
   stop program  = "<%= @release_path %>/nutty-<%= @application_name %>-server-daemon stop"
   if 5 restarts within 5 cycles then timeout
